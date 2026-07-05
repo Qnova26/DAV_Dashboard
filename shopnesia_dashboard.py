@@ -478,17 +478,31 @@ with tab1:
         st.plotly_chart(fig2, use_container_width=True, theme=None)
         chart_card_close()
 
-    # 4. GEOGRAFI
+# 4. GEOGRAFI
     st.markdown("<div class='section-label'>Sebaran Geografis (Gradient Profiling)</div>", unsafe_allow_html=True)
+    
+    # Hitung total untuk persentase hover
+    total_sales_all = df['total_sales'].sum()
+    
     col9, col10 = st.columns(2)
     with col9:
-        chart_card_open("Top 10 Provinsi Kontributor Penjualan")
+        chart_card_open("Top 10 Provinsi Kontributor Penjualan")   
         province_sales = df.groupby('customer_province')['total_sales'].sum().reset_index()
         province_sales = province_sales.sort_values(by='total_sales', ascending=True).tail(10)
+        province_sales['pct'] = (province_sales['total_sales'] / total_sales_all * 100).round(1)
+        
         fig9 = px.bar(province_sales, x='total_sales', y='customer_province', orientation='h', text_auto='.2s', 
                       color='total_sales', color_continuous_scale=["#1E40AF", PRIMARY])
+    
+        fig9.update_traces(
+            textfont_size=11, textposition="outside", cliponaxis=False,
+            hovertemplate="<b>DATA PROVINSI: %{y}</b><br>" +
+                          "Total Penjualan: %{x:,.0f}<br>" +
+                          "Kontribusi: %{customdata}% dari Total Nasional<br>" +
+                          "<extra></extra>",
+            customdata=province_sales['pct']
+        )
         fig9.update_coloraxes(showscale=False)
-        fig9.update_traces(textfont_size=11, textposition="outside", cliponaxis=False)
         st.plotly_chart(style_bar(fig9, 0.7), use_container_width=True, theme=None)
         chart_card_close()
 
@@ -496,10 +510,23 @@ with tab1:
         chart_card_open("Top 10 Kota Kontributor Penjualan")
         city_sales = df.groupby('customer_city')['total_sales'].sum().reset_index()
         city_sales = city_sales.sort_values(by='total_sales', ascending=True).tail(10)
+        
+        # Kolom persen untuk dipakai di hover
+        city_sales['pct'] = (city_sales['total_sales'] / total_sales_all * 100).round(1)
+        
         fig10 = px.bar(city_sales, x='total_sales', y='customer_city', orientation='h', text_auto='.2s', 
                        color='total_sales', color_continuous_scale=["#9A3412", ACCENT])
+        
+        # Kustomisasi Hover
+        fig10.update_traces(
+            textfont_size=11, textposition="outside", cliponaxis=False,
+            hovertemplate="<b>DATA KOTA: %{y}</b><br>" +
+                          "Total Penjualan: %{x:,.0f}<br>" +
+                          "Kontribusi: %{customdata}% dari Total Nasional<br>" +
+                          "<extra></extra>",
+            customdata=city_sales['pct']
+        )
         fig10.update_coloraxes(showscale=False)
-        fig10.update_traces(textfont_size=11, textposition="outside", cliponaxis=False)
         st.plotly_chart(style_bar(fig10, 0.7), use_container_width=True, theme=None)
         chart_card_close()
 
