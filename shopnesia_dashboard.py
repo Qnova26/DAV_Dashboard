@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -50,169 +51,12 @@ pio.templates.default = "shopnesia"
 # ======================================================
 # 3. CSS GLOBAL
 # ======================================================
-st.markdown(f"""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-    html, body, [class*="css"] {{
-        font-family: 'Inter', sans-serif;
-    }}
-
-    .stApp {{
-        background-color: {BG};
-    }}
-    
-    [data-testid="stHeader"] {{
-        background-color: transparent !important;
-    }}
-
-    /* Hero header */
-    .hero {{
-        background: {HERO_GRAD};
-        border-radius: 20px;
-        padding: 32px 36px;
-        margin-bottom: 28px;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        border: 1px solid #2A3B5C;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        overflow: hidden;
-    }}
-    /* Glowing effect behind */
-    .hero::before {{
-        content: '';
-        position: absolute;
-        top: -50px;
-        right: -50px;
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(circle, rgba(72,202,228,0.15) 0%, rgba(0,0,0,0) 70%);
-        border-radius: 50%;
-    }}
-    .hero-content {{
-        position: relative;
-        z-index: 1;
-    }}
-    .hero-title {{
-        font-size: 32px;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-        margin: 0 0 8px 0;
-        /* Apple-style gradient text */
-        background: linear-gradient(90deg, #FFFFFF 0%, {PRIMARY_SOFT} 50%, {PRIMARY} 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }}
-    .hero-sub {{
-        color: #94A3B8;
-        font-size: 14px;
-        margin-top: 0;
-        margin-bottom: 18px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-    }}
-    .hero-badges {{
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-    }}
-    .badge {{
-        background: rgba(42, 59, 92, 0.4);
-        border: 1px solid rgba(72, 202, 228, 0.2);
-        padding: 6px 14px;
-        border-radius: 6px;
-        font-size: 12px;
-        color: #E2E8F0;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }}
-    .badge-green {{
-        background: rgba(16, 185, 129, 0.15);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        color: #34D399;
-    }}
-    .hero-icon {{
-        font-size: 80px;
-        opacity: 0.9;
-        filter: drop-shadow(0 0 20px rgba(72,202,228,0.25));
-        z-index: 1;
-    }}
-
-    /* Section label */
-    .section-label {{
-        color: {SUBTEXT};
-        font-size: 11.5px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin: 22px 0 10px 2px;
-    }}
-
-    /* Kartu untuk setiap chart */
-    .chart-card {{
-        background-color: {CARD_BG};
-        padding: 20px 22px 8px 22px;
-        border-radius: 16px;
-        border: 1px solid {BORDER};
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        margin-bottom: 18px;
-        transition: box-shadow 0.2s ease;
-    }}
-    .chart-card:hover {{
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    }}
-    .chart-header {{
-        color: {INK};
-        font-weight: 700;
-        font-size: 14.5px;
-        margin-bottom: 2px;
-    }}
-    .chart-caption {{
-        color: {SUBTEXT};
-        font-weight: 400;
-        font-size: 12px;
-        margin-bottom: 12px;
-    }}
-
-    /* Metric cards */
-    div[data-testid="stMetric"] {{
-        background-color: {CARD_BG} !important;
-        border: 1px solid {BORDER} !important;
-        border-radius: 14px !important;
-        padding: 16px 20px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
-    }}
-    div[data-testid="stMetricLabel"] > div {{
-        color: {SUBTEXT} !important;
-        font-size: 12px !important;
-        font-weight: 600 !important;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-    }}
-    div[data-testid="stMetricValue"] > div {{
-        color: {INK} !important;
-        font-size: 23px !important;
-        font-weight: 800 !important;
-    }}
-    
-    /* Style untuk Tabs */
-    button[data-baseweb="tab"] {{
-        font-size: 14px;
-        font-weight: 600;
-        color: {SUBTEXT};
-    }}
-    button[data-baseweb="tab"][aria-selected="true"] {{
-        color: {PRIMARY};
-    }}
-    
-    #MainMenu, footer {{visibility: hidden;}}
-    </style>
-""", unsafe_allow_html=True)
+css_path = os.path.join(os.path.dirname(__file__), "style.css")
+if os.path.exists(css_path):
+    with open(css_path, "r", encoding="utf-8") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+else:
+    st.warning("style.css tidak ditemukan. Silakan pastikan file tersebut berada di direktori yang sama.")
 
 # ======================================================
 # 4. LOAD & CLEAN DATA
@@ -274,17 +118,17 @@ except Exception as e:
 # 5. SIDEBAR — FILTER GLOBAL
 # ======================================================
 with st.sidebar:
-    st.markdown(f"""
-        <div style="text-align: center; margin-bottom: 20px;">
-            <div style="font-size: 40px; margin-bottom: -10px;">🛍️</div>
-            <h2 style="color: {PRIMARY}; margin-bottom: 0px; font-weight: 800; font-size: 24px; letter-spacing: -0.5px;">Shopnesia</h2>
-            <p style="color: {SUBTEXT}; font-size: 12px; margin-top: 2px; font-weight: 500; text-transform: uppercase;">Executive Dashboard</p>
+    st.markdown("""
+        <div class="sidebar-header">
+            <div class="sidebar-logo">🛍️</div>
+            <h2 class="sidebar-title">Shopnesia</h2>
+            <p class="sidebar-subtitle">Executive Dashboard</p>
         </div>
     """, unsafe_allow_html=True)
     
-    st.markdown(f"<div style='margin: 15px 0; border-bottom: 1px solid {BORDER};'></div>", unsafe_allow_html=True)
+    st.markdown("<div class='sidebar-divider'></div>", unsafe_allow_html=True)
     
-    st.markdown(f"<div style='color: {INK}; font-size: 13px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;'>🎛️ Filter Analisis</div>", unsafe_allow_html=True)
+    st.markdown("<div class='sidebar-section-title'>🎛️ Filter Analisis</div>", unsafe_allow_html=True)
 
     valid_years = sorted([y for y in df_raw['year'].dropna().unique().tolist() if y not in ('nan', '<NA>', 'NaT')])
     year_options = ["Total"] + valid_years
@@ -294,29 +138,29 @@ with st.sidebar:
     cat_options = ["Semua Kategori"] + valid_categories
     selected_category_filter = st.selectbox("Kategori Produk", cat_options)
 
-    st.markdown(f"<div style='margin: 20px 0; border-bottom: 1px solid {BORDER};'></div>", unsafe_allow_html=True)
+    st.markdown("<div class='sidebar-divider'></div>", unsafe_allow_html=True)
     
     # IDENTITAS KELOMPOK
-    st.markdown(f"""
-        <div style="background-color: {CARD_BG}; padding: 18px 16px; border-radius: 12px; border: 1px solid {BORDER}; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-            <div style="text-align: center; margin-bottom: 16px;">
-                <span style="background-color: {PRIMARY}; color: #0B1121; padding: 4px 12px; border-radius: 20px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;">🏆 Kelompok 10</span>
+    st.markdown("""
+        <div class="group-identity-card">
+            <div class="group-badge-wrapper">
+                <span class="group-badge">🏆 Kelompok 10</span>
             </div>
-            <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
-                <div style="color: {INK}; font-size: 13px; font-weight: 600; margin-bottom: 2px; line-height: 1.4;">Carlos Qnova Bha'a Gani</div>
-                <div style="color: {PRIMARY_SOFT}; font-size: 11px; font-family: monospace;">NIM: 2305551100</div>
+            <div class="member-item">
+                <div class="member-name">Carlos Qnova Bha'a Gani</div>
+                <div class="member-nim">NIM: 2305551100</div>
             </div>
-            <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
-                <div style="color: {INK}; font-size: 13px; font-weight: 600; margin-bottom: 2px; line-height: 1.4;">Made Pradnyan Pranata</div>
-                <div style="color: {PRIMARY_SOFT}; font-size: 11px; font-family: monospace;">NIM: 2305551107</div>
+            <div class="member-item">
+                <div class="member-name">Made Pradnyan Pranata</div>
+                <div class="member-nim">NIM: 2305551107</div>
             </div>
-            <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
-                <div style="color: {INK}; font-size: 13px; font-weight: 600; margin-bottom: 2px; line-height: 1.4;">I Made Rangga Harikesa Subhiksa</div>
-                <div style="color: {PRIMARY_SOFT}; font-size: 11px; font-family: monospace;">NIM: 2305551150</div>
+            <div class="member-item">
+                <div class="member-name">I Made Rangga Harikesa Subhiksa</div>
+                <div class="member-nim">NIM: 2305551150</div>
             </div>
-            <div style="margin-bottom: 4px;">
-                <div style="color: {INK}; font-size: 13px; font-weight: 600; margin-bottom: 2px; line-height: 1.4;">Ni Putu Putri Ayu Antari </div>
-                <div style="color: {PRIMARY_SOFT}; font-size: 11px; font-family: monospace;">NIM: 2305551163</div>
+            <div class="member-item-last">
+                <div class="member-name">Ni Putu Putri Ayu Antari </div>
+                <div class="member-nim">NIM: 2305551163</div>
             </div>
         </div>
     """, unsafe_allow_html=True)
@@ -344,7 +188,7 @@ st.markdown(f"""
             <p class="hero-sub">Global Core Executive Dashboard</p>
             <div class="hero-badges">
                 <div class="badge badge-green">
-                    <span style="font-size: 8px;">🟢</span> Sistem Online
+                    <span class="dot-green">🟢</span> Sistem Online
                 </div>
                 <div class="badge">
                     📊 Total Data: {total_records:,} Baris
@@ -432,15 +276,15 @@ with tab1:
     st.markdown("<br>", unsafe_allow_html=True)
     
     # 2. INSIGHT PANEL
-    st.markdown(f"""
-        <div style="background-color: {CARD_BG}; border-left: 4px solid {ACCENT}; padding: 16px 20px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-            <h4 style="color: {INK}; margin-top: 0; margin-bottom: 8px; font-size: 15px; font-weight: 700;">💡 Executive Insights</h4>
-            <p style="color: {SUBTEXT}; margin: 0; font-size: 13px; line-height: 1.6;">
+    st.markdown("""
+        <div class="insight-card border-accent">
+            <h4 class="insight-title">💡 Executive Insights</h4>
+            <p class="insight-body">
                 <b>Dominasi Geografis:</b> Pulau Jawa terus menunjukkan hegemoni pasar dengan kontribusi terbesar dari DKI Jakarta, Jawa Tengah, dan Jawa Timur.<br>
                 <b>Pergerakan Musiman:</b> Terlihat tren lonjakan pada akhir tahun (Q4), menandakan promosi musiman bekerja dengan baik. Pastikan inventaris cukup mengantisipasi *spike* ini.
             </p>
         </div>
-        <div style="background-color: #1A2740; padding: 8px 14px; border-radius: 6px; display: inline-block; font-size: 11.5px; color: {PRIMARY_SOFT}; border: 1px solid {BORDER}; margin-bottom: 24px;">
+        <div class="guide-badge">
             <b>ℹ️ Panduan Singkatan:</b> &nbsp; <b>k</b> = Ribu &nbsp;|&nbsp; <b>M</b> = Juta &nbsp;|&nbsp; <b>G</b> = Miliar &nbsp;|&nbsp; <b>YoY</b> = <i>Year-over-Year</i> (Dibandingkan Tahun Sebelumnya)
         </div>
     """, unsafe_allow_html=True)
@@ -478,7 +322,7 @@ with tab1:
         st.plotly_chart(fig2, use_container_width=True, theme=None)
         chart_card_close()
 
-# 4. GEOGRAFI
+    # 4. GEOGRAFI
     st.markdown("<div class='section-label'>Sebaran Geografis (Gradient Profiling)</div>", unsafe_allow_html=True)
     
     # Hitung total untuk persentase hover
@@ -533,10 +377,10 @@ with tab1:
 # ================= TAB 2 =================
 with tab2:
     # INSIGHT PANEL TAB 2
-    st.markdown(f"""
-        <div style="background-color: {CARD_BG}; border-left: 4px solid {PRIMARY_SOFT}; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-            <h4 style="color: {INK}; margin-top: 0; margin-bottom: 8px; font-size: 15px; font-weight: 700;">💡 Executive Insights (Demografi & Kategori)</h4>
-            <p style="color: {SUBTEXT}; margin: 0; font-size: 13px; line-height: 1.6;">
+    st.markdown("""
+        <div class="insight-card border-primary-soft mb-24">
+            <h4 class="insight-title">💡 Executive Insights (Demografi & Kategori)</h4>
+            <p class="insight-body">
                 <b>Dominasi Demografi Gen Z & Millenials:</b> Kelompok usia 20-39 tahun mendominasi lebih dari 85% total basis pengguna. Penyesuaian gaya kampanye (*youth-centric*) sangat direkomendasikan.<br>
                 <b>Behavioral Symmetry (Simetri Perilaku):</b> Meskipun volume total transaksi pria dan wanita berbeda, proporsi isi keranjang mereka (*basket composition*) nyaris identik (cth: Kategori Atasan stabil di ~30%). <br>
                 <b>Rekomendasi Aksi:</b> Lakukan standarisasi rasio inventaris (30% Atasan, 25% Bawahan, dst) untuk kedua gender. Ini akan meminimalisir risiko penumpukan stok (*dead stock*).
@@ -595,10 +439,10 @@ with tab2:
 # ================= TAB 3 =================
 with tab3:
     # INSIGHT PANEL TAB 3
-    st.markdown(f"""
-        <div style="background-color: {CARD_BG}; border-left: 4px solid {ACCENT_SOFT}; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-            <h4 style="color: {INK}; margin-top: 0; margin-bottom: 8px; font-size: 15px; font-weight: 700;">💡 Executive Insights (Promosi & Loyalitas)</h4>
-            <p style="color: {SUBTEXT}; margin: 0; font-size: 13px; line-height: 1.6;">
+    st.markdown("""
+        <div class="insight-card border-accent-soft mb-24">
+            <h4 class="insight-title">💡 Executive Insights (Promosi & Loyalitas)</h4>
+            <p class="insight-body">
                 <b>Efektivitas Diskon:</b> Terdapat korelasi positif di mana diskon yang lebih besar mampu mendorong volume pembelian per pesanan, namun dampaknya terhadap Rating relatif stabil (tidak selalu menjamin rating bintang 5).<br>
                 <b>Status Retensi:</b> Sangat disayangkan bahwa basis pelanggan masih didominasi kuat oleh *One-time Buyer*. Memperkuat program *Customer Loyalty* dan kampanye *retargeting* (contoh: promo email khusus pelanggan lama) sangat krusial untuk meningkatkan rasio *Repeat Buyer*.
             </p>
