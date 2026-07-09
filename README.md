@@ -18,6 +18,16 @@ Proyek ini dikembangkan untuk memenuhi tugas mata kuliah **Data Analytics and Vi
 
 ---
 
+## 🎯 Target Pengguna (Target Audience)
+
+Dashboard ini dirancang secara khusus sebagai **Strategic Executive Dashboard**. Pengguna utama yang disasar adalah **Manajer Pemasaran (Chief Marketing Officer / CMO)** atau jajaran *C-Level Executives*. 
+
+**Mengapa peruntukan ini yang paling tepat?**
+- **Fokus pada Gambaran Besar (*High-Level*):** Eksekutif membutuhkan ringkasan data yang cepat dan padat (*compact single-screen view*) untuk memantau performa bisnis secara keseluruhan (Total Pendapatan, Tren Bulanan, dan Peta Dominasi Geografis) tanpa harus menelusuri data operasional mentah secara manual.
+- **Berorientasi pada Strategi Promosi & Retensi:** Analisis mengenai dominasi usia pembeli (Gen Z & Millenials), efektivitas program diskon, dan persentase retensi pelanggan (*Repeat Buyer* vs *One-time Buyer*) adalah "makanan sehari-hari" bagi manajer pemasaran. Metrik ini krusial untuk mengambil keputusan terkait alokasi *budget* iklan (*Ads*), menargetkan promosi musiman, dan merancang program loyalitas pelanggan yang lebih tepat sasaran.
+
+---
+
 ## 🚀 Fitur Utama Dashboard
 
 Dashboard ini dirancang secara *compact* (single-screen view) agar *insight* mudah diakses secara cepat, terbagi dalam 3 pilar analitik utama:
