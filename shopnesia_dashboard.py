@@ -1,5 +1,4 @@
 import streamlit as st
-import os
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -51,12 +50,176 @@ pio.templates.default = "shopnesia"
 # ======================================================
 # 3. CSS GLOBAL
 # ======================================================
-css_path = os.path.join(os.path.dirname(__file__), "style.css")
-if os.path.exists(css_path):
-    with open(css_path, "r", encoding="utf-8") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-else:
-    st.warning("style.css tidak ditemukan. Silakan pastikan file tersebut berada di direktori yang sama.")
+st.markdown(f"""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    .block-container {{
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }}
+
+    html, body, [class*="css"] {{
+        font-family: 'Inter', sans-serif;
+    }}
+
+    .stApp {{
+        background-color: {BG};
+    }}
+    
+    [data-testid="stHeader"] {{
+        background-color: transparent !important;
+    }}
+
+    /* Hero header - Compact version */
+    .hero {{
+        background: {HERO_GRAD};
+        border-radius: 8px;
+        padding: 8px 14px;
+        margin-bottom: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        border: 1px solid #2A3B5C;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }}
+    /* Glowing effect behind */
+    .hero::before {{
+        content: '';
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle, rgba(72,202,228,0.15) 0%, rgba(0,0,0,0) 70%);
+        border-radius: 50%;
+    }}
+    .hero-content {{
+        position: relative;
+        z-index: 1;
+    }}
+    .hero-title {{
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: -0.4px;
+        margin: 0 0 1px 0;
+        /* Apple-style gradient text */
+        background: linear-gradient(90deg, #FFFFFF 0%, {PRIMARY_SOFT} 50%, {PRIMARY} 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }}
+    .hero-sub {{
+        color: #94A3B8;
+        font-size: 9.5px;
+        margin-top: 0;
+        margin-bottom: 4px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+        text-transform: uppercase;
+    }}
+    .hero-badges {{
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }}
+    .badge {{
+        background: rgba(42, 59, 92, 0.4);
+        border: 1px solid rgba(72, 202, 228, 0.2);
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 10px;
+        color: #E2E8F0;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }}
+    .badge-green {{
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #34D399;
+    }}
+    .hero-icon {{
+        font-size: 26px;
+        opacity: 0.9;
+        filter: drop-shadow(0 0 20px rgba(72,202,228,0.25));
+        z-index: 1;
+    }}
+
+    /* Section label */
+    .section-label {{
+        color: {SUBTEXT};
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 12px 0 6px 2px;
+    }}
+
+    /* Kartu untuk setiap chart */
+    .chart-card {{
+        background-color: {CARD_BG};
+        padding: 12px 14px 6px 14px;
+        border-radius: 10px;
+        border: 1px solid {BORDER};
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        margin-bottom: 10px;
+        transition: box-shadow 0.2s ease;
+    }}
+    .chart-card:hover {{
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }}
+    .chart-header {{
+        color: {INK};
+        font-weight: 700;
+        font-size: 13px;
+        margin-bottom: 2px;
+    }}
+    .chart-caption {{
+        color: {SUBTEXT};
+        font-weight: 400;
+        font-size: 11px;
+        margin-bottom: 8px;
+    }}
+
+    /* Metric cards */
+    div[data-testid="stMetric"] {{
+        background-color: {CARD_BG} !important;
+        border: 1px solid {BORDER} !important;
+        border-radius: 8px !important;
+        padding: 8px 14px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+    }}
+    div[data-testid="stMetricLabel"] > div {{
+        color: {SUBTEXT} !important;
+        font-size: 10.5px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }}
+    div[data-testid="stMetricValue"] > div {{
+        color: {INK} !important;
+        font-size: 18px !important;
+        font-weight: 800 !important;
+    }}
+    
+
+    
+    /* Style untuk Tabs */
+    button[data-baseweb="tab"] {{
+        font-size: 14px;
+        font-weight: 600;
+        color: {SUBTEXT};
+    }}
+    button[data-baseweb="tab"][aria-selected="true"] {{
+        color: {PRIMARY};
+    }}
+    
+    #MainMenu, footer {{visibility: hidden;}}
+    </style>
+""", unsafe_allow_html=True)
 
 # ======================================================
 # 4. LOAD & CLEAN DATA
@@ -118,17 +281,17 @@ except Exception as e:
 # 5. SIDEBAR — FILTER GLOBAL
 # ======================================================
 with st.sidebar:
-    st.markdown("""
-        <div class="sidebar-header">
-            <div class="sidebar-logo">🛍️</div>
-            <h2 class="sidebar-title">Shopnesia</h2>
-            <p class="sidebar-subtitle">Executive Dashboard</p>
+    st.markdown(f"""
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 40px; margin-bottom: -10px;">🛍️</div>
+            <h2 style="color: {PRIMARY}; margin-bottom: 0px; font-weight: 800; font-size: 24px; letter-spacing: -0.5px;">Shopnesia</h2>
+            <p style="color: {SUBTEXT}; font-size: 12px; margin-top: 2px; font-weight: 500; text-transform: uppercase;">Executive Dashboard</p>
         </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("<div class='sidebar-divider'></div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='margin: 15px 0; border-bottom: 1px solid {BORDER};'></div>", unsafe_allow_html=True)
     
-    st.markdown("<div class='sidebar-section-title'>🎛️ Filter Analisis</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='color: {INK}; font-size: 13px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;'>🎛️ Filter Analisis</div>", unsafe_allow_html=True)
 
     valid_years = sorted([y for y in df_raw['year'].dropna().unique().tolist() if y not in ('nan', '<NA>', 'NaT')])
     year_options = ["Total"] + valid_years
@@ -138,30 +301,42 @@ with st.sidebar:
     cat_options = ["Semua Kategori"] + valid_categories
     selected_category_filter = st.selectbox("Kategori Produk", cat_options)
 
-    st.markdown("<div class='sidebar-divider'></div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='margin: 20px 0; border-bottom: 1px solid {BORDER};'></div>", unsafe_allow_html=True)
     
     # IDENTITAS KELOMPOK
-    st.markdown("""
-        <div class="group-identity-card">
-            <div class="group-badge-wrapper">
-                <span class="group-badge">🏆 Kelompok 10</span>
+    st.markdown(f"""
+        <div style="background-color: {CARD_BG}; padding: 18px 16px; border-radius: 12px; border: 1px solid {BORDER}; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <div style="text-align: center; margin-bottom: 16px;">
+                <div style="display: inline-block; background-color: {PRIMARY}; color: #0B1121; padding: 4px 12px; border-radius: 20px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap;">🏆 Kelompok 10</div>
             </div>
-            <div class="member-item">
-                <div class="member-name">Carlos Qnova Bha'a Gani</div>
-                <div class="member-nim">NIM: 2305551100</div>
+            <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
+                <div style="color: {INK}; font-size: 13px; font-weight: 600; margin-bottom: 2px; line-height: 1.4;">Carlos Qnova Bha'a Gani</div>
+                <div style="color: {PRIMARY_SOFT}; font-size: 11px; font-family: monospace;">NIM: 2305551100</div>
             </div>
-            <div class="member-item">
-                <div class="member-name">Made Pradnyan Pranata</div>
-                <div class="member-nim">NIM: 2305551107</div>
+            <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
+                <div style="color: {INK}; font-size: 13px; font-weight: 600; margin-bottom: 2px; line-height: 1.4;">Made Pradnyan Pranata</div>
+                <div style="color: {PRIMARY_SOFT}; font-size: 11px; font-family: monospace;">NIM: 2305551107</div>
             </div>
-            <div class="member-item">
-                <div class="member-name">I Made Rangga Harikesa Subhiksa</div>
-                <div class="member-nim">NIM: 2305551150</div>
+            <div style="margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
+                <div style="color: {INK}; font-size: 13px; font-weight: 600; margin-bottom: 2px; line-height: 1.4;">I Made Rangga Harikesa Subhiksa</div>
+                <div style="color: {PRIMARY_SOFT}; font-size: 11px; font-family: monospace;">NIM: 2305551150</div>
             </div>
-            <div class="member-item-last">
-                <div class="member-name">Ni Putu Putri Ayu Antari </div>
-                <div class="member-nim">NIM: 2305551163</div>
+            <div style="margin-bottom: 4px;">
+                <div style="color: {INK}; font-size: 13px; font-weight: 600; margin-bottom: 2px; line-height: 1.4;">Ni Putu Putri Ayu Antari </div>
+                <div style="color: {PRIMARY_SOFT}; font-size: 11px; font-family: monospace;">NIM: 2305551163</div>
             </div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"<div style='margin: 15px 0; border-bottom: 1px solid {BORDER};'></div>", unsafe_allow_html=True)
+    
+    st.markdown(f"""
+        <div style="background-color: #1A2740; padding: 12px 14px; border-radius: 8px; font-size: 11px; color: {PRIMARY_SOFT}; border: 1px solid {BORDER}; line-height: 1.5;">
+            <b>ℹ️ Panduan Singkatan:</b><br>
+            • <b>k</b> = Ribu (Ribuan)<br>
+            • <b>M</b> = Juta (Jutaan)<br>
+            • <b>G</b> = Miliar (Miliaran)<br>
+            • <b>YoY</b> = <i>Year-over-Year</i> (vs Tahun Lalu)
         </div>
     """, unsafe_allow_html=True)
     
@@ -188,7 +363,7 @@ st.markdown(f"""
             <p class="hero-sub">Global Core Executive Dashboard</p>
             <div class="hero-badges">
                 <div class="badge badge-green">
-                    <span class="dot-green">🟢</span> Sistem Online
+                    <span style="font-size: 8px;">🟢</span> Sistem Online
                 </div>
                 <div class="badge">
                     📊 Total Data: {total_records:,} Baris
@@ -273,34 +448,13 @@ with tab1:
     with m4:
         st.metric(label="⭐ Kepuasan Pelanggan", value=f"{df['rating'].mean():.2f} / 5.0", delta=rating_delta)
         
-    st.markdown("<br>", unsafe_allow_html=True)
     
-    # 2. INSIGHT PANEL
-    st.markdown("""
-        <div class="insight-card border-accent">
-            <h4 class="insight-title">💡 Executive Insights</h4>
-            <p class="insight-body">
-                <b>Dominasi Geografis:</b> Pulau Jawa terus menunjukkan hegemoni pasar dengan kontribusi terbesar dari DKI Jakarta, Jawa Tengah, dan Jawa Timur.<br>
-                <b>Pergerakan Musiman:</b> Terlihat tren lonjakan pada akhir tahun (Q4), menandakan promosi musiman bekerja dengan baik. Pastikan inventaris cukup mengantisipasi *spike* ini.
-            </p>
-        </div>
-        <div class="guide-badge">
-            <b>ℹ️ Panduan Singkatan:</b> &nbsp; <b>k</b> = Ribu &nbsp;|&nbsp; <b>M</b> = Juta &nbsp;|&nbsp; <b>G</b> = Miliar &nbsp;|&nbsp; <b>YoY</b> = <i>Year-over-Year</i> (Dibandingkan Tahun Sebelumnya)
-        </div>
-    """, unsafe_allow_html=True)
     
-    # 3. TREN PENJUALAN
-    col1, col2 = st.columns(2)
-    with col1:
-        chart_card_open("Tren Penjualan Tahunan")
-        yearly_sales = df.groupby('year')['total_sales'].sum().reset_index()
-        fig1 = px.bar(yearly_sales, x='year', y='total_sales', text_auto='.2s')
-        fig1.update_traces(marker=dict(color=yearly_sales['total_sales'], colorscale=["#1E40AF", PRIMARY]),
-                           textfont_size=12, textposition="outside", cliponaxis=False)
-        st.plotly_chart(style_bar(fig1, 0.4), use_container_width=True, theme=None)
-        chart_card_close()
 
-    with col2:
+    # 3. TREN & GEOGRAFI (Compact Single Row of 3 charts)
+    col_left, col_mid, col_right = st.columns([5, 3.5, 3.5])
+    
+    with col_left:
         chart_card_open("Tren Penjualan Bulanan & Moving Average")
         monthly_sales = df.groupby('month_year')['total_sales'].sum().reset_index().sort_values('month_year')
         monthly_sales['Moving Average (3M)'] = monthly_sales['total_sales'].rolling(window=3, min_periods=1).mean()
@@ -308,102 +462,66 @@ with tab1:
         fig2 = go.Figure()
         fig2.add_trace(go.Scatter(
             x=monthly_sales['month_year'], y=monthly_sales['total_sales'],
-            fill='tozeroy', mode='lines+markers', name='Penjualan Aktual',
+            fill='tozeroy', mode='lines+markers', name='Aktual',
             line=dict(color=PRIMARY_SOFT, width=2), fillcolor="rgba(72, 202, 228, 0.15)",
-            marker=dict(size=6, color=PRIMARY)
+            marker=dict(size=5, color=PRIMARY)
         ))
         fig2.add_trace(go.Scatter(
             x=monthly_sales['month_year'], y=monthly_sales['Moving Average (3M)'],
-            mode='lines', name='Tren (3M MA)',
-            line=dict(color=ACCENT, width=2.5, dash='dot')
+            mode='lines', name='MA (3M)',
+            line=dict(color=ACCENT, width=2, dash='dot')
         ))
-        fig2.update_layout(margin=dict(l=0, r=0, t=10, b=0), 
-                           legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=INK, size=11)))
+        fig2.update_layout(height=260, margin=dict(l=0, r=0, t=10, b=0), 
+                           legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=INK, size=10)))
         st.plotly_chart(fig2, use_container_width=True, theme=None)
         chart_card_close()
 
-    # 4. GEOGRAFI
-    st.markdown("<div class='section-label'>Sebaran Geografis (Gradient Profiling)</div>", unsafe_allow_html=True)
-    
-    # Hitung total untuk persentase hover
-    total_sales_all = df['total_sales'].sum()
-    
-    col9, col10 = st.columns(2)
-    with col9:
-        chart_card_open("Top 10 Provinsi Kontributor Penjualan")   
+    with col_mid:
+        chart_card_open("Top 10 Provinsi Kontributor")
         province_sales = df.groupby('customer_province')['total_sales'].sum().reset_index()
         province_sales = province_sales.sort_values(by='total_sales', ascending=True).tail(10)
-        province_sales['pct'] = (province_sales['total_sales'] / total_sales_all * 100).round(1)
-        
         fig9 = px.bar(province_sales, x='total_sales', y='customer_province', orientation='h', text_auto='.2s', 
                       color='total_sales', color_continuous_scale=["#1E40AF", PRIMARY])
-    
-        fig9.update_traces(
-            textfont_size=11, textposition="outside", cliponaxis=False,
-            hovertemplate="<b>DATA PROVINSI: %{y}</b><br>" +
-                          "Total Penjualan: %{x:,.0f}<br>" +
-                          "Kontribusi: %{customdata}% dari Total Nasional<br>" +
-                          "<extra></extra>",
-            customdata=province_sales['pct']
-        )
         fig9.update_coloraxes(showscale=False)
+        fig9.update_layout(height=260, margin=dict(l=0, r=0, t=10, b=0))
+        fig9.update_traces(textfont_size=10, textposition="outside", cliponaxis=False)
         st.plotly_chart(style_bar(fig9, 0.7), use_container_width=True, theme=None)
         chart_card_close()
 
-    with col10:
-        chart_card_open("Top 10 Kota Kontributor Penjualan")
+    with col_right:
+        chart_card_open("Top 10 Kota Kontributor")
         city_sales = df.groupby('customer_city')['total_sales'].sum().reset_index()
         city_sales = city_sales.sort_values(by='total_sales', ascending=True).tail(10)
-        
-        # Kolom persen untuk dipakai di hover
-        city_sales['pct'] = (city_sales['total_sales'] / total_sales_all * 100).round(1)
-        
         fig10 = px.bar(city_sales, x='total_sales', y='customer_city', orientation='h', text_auto='.2s', 
                        color='total_sales', color_continuous_scale=["#9A3412", ACCENT])
-        
-        # Kustomisasi Hover
-        fig10.update_traces(
-            textfont_size=11, textposition="outside", cliponaxis=False,
-            hovertemplate="<b>DATA KOTA: %{y}</b><br>" +
-                          "Total Penjualan: %{x:,.0f}<br>" +
-                          "Kontribusi: %{customdata}% dari Total Nasional<br>" +
-                          "<extra></extra>",
-            customdata=city_sales['pct']
-        )
         fig10.update_coloraxes(showscale=False)
+        fig10.update_layout(height=260, margin=dict(l=0, r=0, t=10, b=0))
+        fig10.update_traces(textfont_size=10, textposition="outside", cliponaxis=False)
         st.plotly_chart(style_bar(fig10, 0.7), use_container_width=True, theme=None)
         chart_card_close()
 
 # ================= TAB 2 =================
 with tab2:
-    # INSIGHT PANEL TAB 2
-    st.markdown("""
-        <div class="insight-card border-primary-soft mb-24">
-            <h4 class="insight-title">💡 Executive Insights (Demografi & Kategori)</h4>
-            <p class="insight-body">
-                <b>Dominasi Demografi Gen Z & Millenials:</b> Kelompok usia 20-39 tahun mendominasi lebih dari 85% total basis pengguna. Penyesuaian gaya kampanye (*youth-centric*) sangat direkomendasikan.<br>
-                <b>Behavioral Symmetry (Simetri Perilaku):</b> Meskipun volume total transaksi pria dan wanita berbeda, proporsi isi keranjang mereka (*basket composition*) nyaris identik (cth: Kategori Atasan stabil di ~30%). <br>
-                <b>Rekomendasi Aksi:</b> Lakukan standarisasi rasio inventaris (30% Atasan, 25% Bawahan, dst) untuk kedua gender. Ini akan meminimalisir risiko penumpukan stok (*dead stock*).
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
 
-    col3, col4 = st.columns(2)
+    # 3-column layout to fit on one screen
+    col3, col4, col5 = st.columns([3, 4.5, 4.5])
+    
     with col3:
-        chart_card_open("Segmentasi Konsumen Berdasarkan Usia")
+        chart_card_open("Segmentasi Konsumen (Usia)")
         age_profile = df.groupby('age_group').size().reset_index(name='Jumlah')
         age_profile.rename(columns={'age_group': 'Profil Usia'}, inplace=True)
-        # Urutkan berdasarkan kelompok usia secara logis
         age_profile = age_profile.sort_values('Profil Usia') 
         
         fig3 = px.pie(age_profile, names='Profil Usia', values='Jumlah', hole=0.65,
                       color_discrete_sequence=CATEGORICAL_SEQUENCE)
-        fig3.update_traces(textfont_size=11, marker=dict(line=dict(color=BG, width=2)))
+        fig3.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0),
+                           legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=INK, size=10)))
+        fig3.update_traces(textfont_size=10, marker=dict(line=dict(color=BG, width=1.5)))
         st.plotly_chart(fig3, use_container_width=True, theme=None)
         chart_card_close()
 
     with col4:
-        chart_card_open("Distribusi Volume Pembelian Kategori Produk")
+        chart_card_open("Volume Pembelian Kategori Produk")
         category_sales = df['product_category'].value_counts().reset_index()
         category_sales.columns = ['Kategori', 'Jumlah']
         category_sales = category_sales.sort_values('Jumlah', ascending=True)
@@ -411,45 +529,30 @@ with tab2:
         fig4 = px.bar(category_sales, x='Jumlah', y='Kategori', orientation='h', text_auto='.2s',
                       color='Jumlah', color_continuous_scale=["#1E40AF", PRIMARY_SOFT])
         fig4.update_coloraxes(showscale=False)
-        fig4.update_traces(textfont_size=11, textposition="outside", cliponaxis=False)
+        fig4.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0))
+        fig4.update_traces(textfont_size=10, textposition="outside", cliponaxis=False)
         st.plotly_chart(style_bar(fig4, 0.7), use_container_width=True, theme=None)
         chart_card_close()
 
-    col5, col6 = st.columns(2)
     with col5:
         chart_card_open("Preferensi Kategori Berdasarkan Gender")
         gender_category = df.groupby(['product_category', 'customer_gender']).size().reset_index(name='Jumlah')
-        # Urutkan kategori berdasarkan total agar lebih rapi
         cat_order = gender_category.groupby('product_category')['Jumlah'].sum().sort_values(ascending=False).index
         fig5 = px.bar(gender_category, x='product_category', y='Jumlah', color='customer_gender', text_auto='.2s',
                       barmode='group', color_discrete_map=GENDER_MAP, category_orders={'product_category': cat_order})
-        fig5.update_traces(textfont_size=11, textposition='outside', cliponaxis=False)
+        fig5.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0),
+                           legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=INK, size=10)))
+        fig5.update_traces(textfont_size=10, textposition='outside', cliponaxis=False)
         st.plotly_chart(style_bar(fig5, 0.3), use_container_width=True, theme=None)
-        chart_card_close()
-
-    with col6:
-        chart_card_open("Behavioral Symmetry: Komposisi Keranjang Pria vs Wanita")
-        gender_cat_prop = df.groupby(['customer_gender', 'product_category'])['quantity'].sum().reset_index()
-        fig6 = px.sunburst(gender_cat_prop, path=['customer_gender', 'product_category'], values='quantity',
-                           color='customer_gender', color_discrete_map=GENDER_MAP)
-        fig6.update_traces(marker=dict(line=dict(color=BG, width=1.5)))
-        st.plotly_chart(fig6, use_container_width=True, theme=None)
         chart_card_close()
 
 # ================= TAB 3 =================
 with tab3:
-    # INSIGHT PANEL TAB 3
-    st.markdown("""
-        <div class="insight-card border-accent-soft mb-24">
-            <h4 class="insight-title">💡 Executive Insights (Promosi & Loyalitas)</h4>
-            <p class="insight-body">
-                <b>Efektivitas Diskon:</b> Terdapat korelasi positif di mana diskon yang lebih besar mampu mendorong volume pembelian per pesanan, namun dampaknya terhadap Rating relatif stabil (tidak selalu menjamin rating bintang 5).<br>
-                <b>Status Retensi:</b> Sangat disayangkan bahwa basis pelanggan masih didominasi kuat oleh *One-time Buyer*. Memperkuat program *Customer Loyalty* dan kampanye *retargeting* (contoh: promo email khusus pelanggan lama) sangat krusial untuk meningkatkan rasio *Repeat Buyer*.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
 
-    col7, col8 = st.columns(2)
+
+    # 3-column layout to fit on one screen
+    col7, col8, col9 = st.columns([4, 4, 3])
+    
     with col7:
         chart_card_open("Dampak Rentang Diskon Terhadap Kuantitas")
         def discount_bin(pct):
@@ -460,16 +563,15 @@ with tab3:
             
         df_discount = df.copy()
         df_discount['discount_group'] = df_discount['discount_percent'].apply(discount_bin)
-        # Hilangkan grouping tahun, murni ambil rata-rata kuantitas dari periode yang difilter
         discount_qty = df_discount.groupby('discount_group')['quantity'].mean().reset_index()
         discount_qty = discount_qty.sort_values('discount_group')
-        # Buang prefix angka untuk estetika label
         discount_qty['Label'] = discount_qty['discount_group'].apply(lambda x: x.split('. ')[1])
         
         fig7 = px.bar(discount_qty, x='Label', y='quantity', text_auto='.1f',
                       color='quantity', color_continuous_scale=["#1E40AF", PRIMARY])
         fig7.update_coloraxes(showscale=False)
-        fig7.update_traces(textfont_size=12, textposition="outside", cliponaxis=False)
+        fig7.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0))
+        fig7.update_traces(textfont_size=10, textposition="outside", cliponaxis=False)
         st.plotly_chart(style_bar(fig7, 0.6), use_container_width=True, theme=None)
         chart_card_close()
 
@@ -477,41 +579,24 @@ with tab3:
         chart_card_open("Korelasi Persentase Diskon terhadap Rating")
         discount_rating = df.groupby('discount_percent')['rating'].mean().reset_index().sort_values('discount_percent')
         
-        # Scatter/Line Chart yang benar: X = Persentase Diskon, Y = Rating
         fig8 = go.Figure()
         fig8.add_trace(go.Scatter(
             x=discount_rating['discount_percent'], y=discount_rating['rating'],
             mode='lines+markers', name='Rata-rata Rating',
-            line=dict(color=ACCENT, width=2.5),
-            marker=dict(size=7, color=ACCENT_SOFT)
+            line=dict(color=ACCENT, width=2),
+            marker=dict(size=5, color=ACCENT_SOFT)
         ))
         
-        # Fokuskan range Y (Rating) agar fluktuasinya terlihat jelas
         y_min = max(1.0, discount_rating['rating'].min() - 0.2)
         y_max = min(5.0, discount_rating['rating'].max() + 0.2)
-        fig8.update_layout(margin=dict(l=0, r=0, t=10, b=0),
+        fig8.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0),
                            xaxis_title="Besaran Diskon (%)", yaxis_title="Rata-rata Rating (⭐)",
                            yaxis=dict(range=[y_min, y_max], showgrid=True), xaxis=dict(showgrid=True))
                            
         st.plotly_chart(fig8, use_container_width=True, theme=None)
         chart_card_close()
         
-    col11, col12 = st.columns(2)
-    with col11:
-        chart_card_open("Top 5 Pelanggan Teratas (Total Transaksi)")
-        top_customers = df.groupby('customer_id')['total_sales'].sum().reset_index()
-        top_customers = top_customers.sort_values(by='total_sales', ascending=True).tail(5)
-        # Sederhanakan ID Customer agar rapi (ambil 8 karakter)
-        top_customers['Customer'] = top_customers['customer_id'].apply(lambda x: str(x)[:8] + '...')
-        
-        fig11 = px.bar(top_customers, x='total_sales', y='Customer', orientation='h', text_auto='.2s',
-                       color='total_sales', color_continuous_scale=["#9A3412", ACCENT])
-        fig11.update_coloraxes(showscale=False)
-        fig11.update_traces(textfont_size=11, textposition="outside", cliponaxis=False)
-        st.plotly_chart(style_bar(fig11, 0.5), use_container_width=True, theme=None)
-        chart_card_close()
-        
-    with col12:
+    with col9:
         chart_card_open("Rasio Retensi Pelanggan (Loyalitas)")
         cust_order_counts = df.groupby('customer_id')['order_id'].nunique().reset_index()
         cust_order_counts['Buyer Type'] = cust_order_counts['order_id'].apply(lambda x: 'Repeat Buyer (>1 Order)' if x > 1 else 'One-time Buyer')
@@ -520,6 +605,8 @@ with tab3:
         
         fig12 = px.pie(retention_data, names='Tipe Pembeli', values='Jumlah', hole=0.65,
                        color_discrete_map={'Repeat Buyer (>1 Order)': PRIMARY, 'One-time Buyer': PRIMARY_SOFT})
-        fig12.update_traces(textfont_size=11, marker=dict(line=dict(color=BG, width=2)))
+        fig12.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0),
+                           legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=INK, size=10)))
+        fig12.update_traces(textfont_size=10, marker=dict(line=dict(color=BG, width=1.5)))
         st.plotly_chart(fig12, use_container_width=True, theme=None)
         chart_card_close()
