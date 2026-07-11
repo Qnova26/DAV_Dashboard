@@ -247,7 +247,7 @@ def load_data():
     still_missing = parsed_dates.isna()
     if still_missing.any():
         parsed_dates.loc[still_missing] = pd.to_datetime(
-            df.loc[still_missing, 'order_date'], errors='coerce', dayfirst=True
+            df.loc[still_missing, 'order_date'], format='%m/%d/%Y', errors='coerce'
         )
     df['order_date'] = parsed_dates
     df['year'] = df['order_date'].dt.year.astype('Int64').astype(str)
@@ -473,7 +473,7 @@ with tab1:
         ))
         fig2.update_layout(height=260, margin=dict(l=0, r=0, t=10, b=0), 
                            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=INK, size=10)))
-        st.plotly_chart(fig2, use_container_width=True, theme=None)
+        st.plotly_chart(fig2, width='stretch', theme=None)
         chart_card_close()
 
     with col_mid:
@@ -485,7 +485,7 @@ with tab1:
         fig9.update_coloraxes(showscale=False)
         fig9.update_layout(height=260, margin=dict(l=0, r=0, t=10, b=0))
         fig9.update_traces(textfont_size=10, textposition="outside", cliponaxis=False)
-        st.plotly_chart(style_bar(fig9, 0.7), use_container_width=True, theme=None)
+        st.plotly_chart(style_bar(fig9, 0.7), width='stretch', theme=None)
         chart_card_close()
 
     with col_right:
@@ -497,7 +497,7 @@ with tab1:
         fig10.update_coloraxes(showscale=False)
         fig10.update_layout(height=260, margin=dict(l=0, r=0, t=10, b=0))
         fig10.update_traces(textfont_size=10, textposition="outside", cliponaxis=False)
-        st.plotly_chart(style_bar(fig10, 0.7), use_container_width=True, theme=None)
+        st.plotly_chart(style_bar(fig10, 0.7), width='stretch', theme=None)
         chart_card_close()
 
 # ================= TAB 2 =================
@@ -517,7 +517,7 @@ with tab2:
         fig3.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0),
                            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=INK, size=10)))
         fig3.update_traces(textfont_size=10, marker=dict(line=dict(color=BG, width=1.5)))
-        st.plotly_chart(fig3, use_container_width=True, theme=None)
+        st.plotly_chart(fig3, width='stretch', theme=None)
         chart_card_close()
 
     with col4:
@@ -531,7 +531,7 @@ with tab2:
         fig4.update_coloraxes(showscale=False)
         fig4.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0))
         fig4.update_traces(textfont_size=10, textposition="outside", cliponaxis=False)
-        st.plotly_chart(style_bar(fig4, 0.7), use_container_width=True, theme=None)
+        st.plotly_chart(style_bar(fig4, 0.7), width='stretch', theme=None)
         chart_card_close()
 
     with col5:
@@ -543,7 +543,7 @@ with tab2:
         fig5.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0),
                            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=INK, size=10)))
         fig5.update_traces(textfont_size=10, textposition='outside', cliponaxis=False)
-        st.plotly_chart(style_bar(fig5, 0.3), use_container_width=True, theme=None)
+        st.plotly_chart(style_bar(fig5, 0.3), width='stretch', theme=None)
         chart_card_close()
 
 # ================= TAB 3 =================
@@ -572,7 +572,7 @@ with tab3:
         fig7.update_coloraxes(showscale=False)
         fig7.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0))
         fig7.update_traces(textfont_size=10, textposition="outside", cliponaxis=False)
-        st.plotly_chart(style_bar(fig7, 0.6), use_container_width=True, theme=None)
+        st.plotly_chart(style_bar(fig7, 0.6), width='stretch', theme=None)
         chart_card_close()
 
     with col8:
@@ -593,7 +593,7 @@ with tab3:
                            xaxis_title="Besaran Diskon (%)", yaxis_title="Rata-rata Rating (⭐)",
                            yaxis=dict(range=[y_min, y_max], showgrid=True), xaxis=dict(showgrid=True))
                            
-        st.plotly_chart(fig8, use_container_width=True, theme=None)
+        st.plotly_chart(fig8, width='stretch', theme=None)
         chart_card_close()
         
     with col9:
@@ -608,5 +608,5 @@ with tab3:
         fig12.update_layout(height=330, margin=dict(l=0, r=0, t=10, b=0),
                            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=INK, size=10)))
         fig12.update_traces(textfont_size=10, marker=dict(line=dict(color=BG, width=1.5)))
-        st.plotly_chart(fig12, use_container_width=True, theme=None)
+        st.plotly_chart(fig12, width='stretch', theme=None)
         chart_card_close()
